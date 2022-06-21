@@ -4,7 +4,7 @@ title "Sample Section"
 
 gcp_project_id = input("gcp_project_id")
 
-control "gcp-cloud-sql" do
+control "gcp_cloud_sql" do
     impact 1.0
     title "Ensure cloud sql"
     desc "An optional description..."
