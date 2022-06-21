@@ -1,0 +1,19 @@
+steps:
+- id: 'run-inspec-cis'
+  name: chef/inspec:latest
+  entrypoint: '/bin/sh'
+  args:
+   - '-c'
+   - |
+     inspec exec https://github.com/rp-sapient/inspec-poc.git \
+     --target gcp:// \
+     --input gcp_project_id=${PROJECT_ID} \
+     --reporter cli json:/workspace/report.json \
+     --chef-license accept || touch fail.marker
+
+- id: 'store-report'
+  name: gcr.io/cloud-builders/gsutil
+  args:
+   - cp
+   - /workspace/report.json
+   - gs://${_REPORTS_BUCKET}/cis-report-${BUILD_ID}.json
